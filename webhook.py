@@ -48,17 +48,6 @@ def fetch():
             if re.search(r'^[^<>]+$', title) :
                 results.append((topic['href'][21:], title))
 
-        #print(results)
-        #print(text)) #(["a"])
-
-#       with open('webtest.txt', 'w') as f:
-#           for tag in text:
-#               for stuff in tag.contents:
-#                   print(stuff)
-#                   wqLines = list(filter(lambda x: 'ForumTopic' in x, stuff))
-#                   for wqLine in wqLines:
-#                       f.write(wqLine)
-
         return results
 
 def process(data):
@@ -83,11 +72,12 @@ def matchTopic(terms, title):
     for term in terms:
         contains = True
 
-        for word in term[1].split(' '):
-            print('{0} in {1}'.format(word, title))            
-            contains &= (word in title)
-        if contains:
-            return True
+        for expression in term[1].split(','):
+            for word in expression.split(' '):
+                print('{0} in {1}'.format(word, title))            
+                contains &= (word in title)
+            if contains:
+                return True
     return False
 
 async def sendWebhook(topicId):
@@ -98,7 +88,7 @@ async def sendWebhook(topicId):
 
     async with aiohttp.ClientSession() as session:
         webhook = Webhook.from_url('{0}'.format(webhookurl), adapter=AsyncWebhookAdapter(session))
-        await webhook.send('https://us.battle.net/forums/en/wow/topic/{0}'.format(topicId), username='Perfect Raider Finder', avatar_url='https://i.imgur.com/x3pJPUD.png')
+        await webhook.send('https://us.battle.net/forums/en/wow/topic/{0}'.format(topicId), username='Perfect Raider Finder', avatar_url='https://i.imgur.com/sO0KcOb.png')
 
 loop =  asyncio.get_event_loop()  
 
