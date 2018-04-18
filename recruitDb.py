@@ -6,7 +6,7 @@ import urllib
 class DbApi:
     def getDatabase(self):
 
-        dbName = 'broadcasts.db'
+        dbName = 'recruitmentWatcher.db'
         freshDb = os.path.isfile(dbName)
         db = sqlite3.connect(dbName)
 
